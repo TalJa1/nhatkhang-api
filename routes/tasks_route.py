@@ -3,10 +3,19 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from database import get_db
 from pydantic import BaseModel
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    DateTime,
+    ForeignKey,
+    Boolean,
+    func as sql_func,
+)
 from database import Base
 from datetime import datetime
 from sqlalchemy.sql import func
+import math
 
 router = APIRouter()
 
@@ -55,11 +64,64 @@ async def create_task(task: TaskCreate, db: AsyncSession = Depends(get_db)):
 
 @router.get("/tasks/")
 async def read_tasks(
-    skip: int = 0, limit: int = 10, db: AsyncSession = Depends(get_db)
+    skip: int = 0,
+    limit: int = 10,
+    subject: str = "",
+    priority: str = "",
+    status: str = "",
+    db: AsyncSession = Depends(get_db),
 ):
-    result = await db.execute(select(Task).offset(skip).limit(limit))
+    # Build the query with optional filters
+    query = select(Task)
+
+    # Apply filters if provided
+    if subject:
+        query = query.where(Task.subject.ilike(f"%{subject}%"))
+    if priority:
+        try:
+            priority_int = int(priority)
+            query = query.where(Task.priority == priority_int)
+        except ValueError:
+            pass  # Ignore invalid priority values
+    if status:
+        query = query.where(Task.status.ilike(f"%{status}%"))
+
+    # Get total count with filters applied
+    count_query = select(sql_func.count(Task.task_id))
+    if subject:
+        count_query = count_query.where(Task.subject.ilike(f"%{subject}%"))
+    if priority:
+        try:
+            priority_int = int(priority)
+            count_query = count_query.where(Task.priority == priority_int)
+        except ValueError:
+            pass
+    if status:
+        count_query = count_query.where(Task.status.ilike(f"%{status}%"))
+
+    count_result = await db.execute(count_query)
+    total_count = count_result.scalar()
+
+    # Get tasks with pagination and filters
+    result = await db.execute(query.offset(skip).limit(limit))
     tasks = result.scalars().all()
-    return tasks
+
+    # Calculate pagination metadata
+    total_pages = math.ceil(total_count / limit) if total_count > 0 else 0
+    current_page = (skip // limit) + 1
+
+    return {
+        "data": tasks,
+        "pagination": {
+            "total_count": total_count,
+            "total_pages": total_pages,
+            "current_page": current_page,
+            "per_page": limit,
+            "has_next": current_page < total_pages,
+            "has_previous": current_page > 1,
+        },
+        "filters": {"subject": subject, "priority": priority, "status": status},
+    }
 
 
 @router.get("/tasks/{task_id}")
