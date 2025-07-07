@@ -1,9 +1,19 @@
 version: '3.8'
 
 services:
-  smartstudy-api:
+  fastapi_app:
     build: .
     ports:
-      - "8000:80"
+      - "8000:8000"
     volumes:
-      - .:/app
+      # Mount the local project directory to /app inside the container
+      - ./:/app
+      # Optionally, persist the SQLite DB file in a dedicated folder
+      - ./store.db:/app/store.db
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+    # You might need to add environment variables here if you externalize DATABASE_URL
+    # environment:
+    #   DATABASE_URL: "sqlite:///./data/sqlite.db"
+
+volumes:
+  sqlite_data: # Define a named volume if you prefer, instead of bind mount
