@@ -103,7 +103,14 @@ INSERT INTO Tasks (user_id, title, subject, description, due_date, priority, sta
 (1, 'Luyện tập Bài tập Python', 'Toán', NULL, '2025-04-25', 2, 'Quá hạn'),
 (2, 'Lên kế hoạch Cấu trúc', 'Vật Lý', NULL, '2025-04-25', 1, 'Hoàn thành'),
 (2, 'Thiết kế Bản nháp', 'Hóa Học', NULL, '2026-05-05', 1, 'Đang làm'),
-(1, 'Đọc "Sapiens"', 'Lịch sử', NULL, '2026-05-15', 3, 'Đang làm');
+(1, 'Đọc "Sapiens"', 'Lịch sử', NULL, '2026-05-15', 3, 'Đang làm'),
+(3, 'Ôn tập Đại số', 'Toán', NULL, '2025-07-10', 2, 'Đang làm'),
+(2, 'Viết báo cáo thí nghiệm', 'Hóa Học', NULL, '2025-08-01', 1, 'Đang làm'),
+(1, 'Chuẩn bị bài thuyết trình', 'Văn', NULL, '2025-09-15', 2, 'Đang làm'),
+(3, 'Làm bài tập về nhà', 'Vật Lý', NULL, '2025-07-20', 3, 'Quá hạn'),
+(2, 'Đọc chương 3 Sách Sinh', 'Sinh học', NULL, '2025-10-05', 2, 'Đang làm'),
+(1, 'Tìm hiểu về AI', 'Tin học', NULL, '2025-11-11', 1, 'Hoàn thành'),
+(3, 'Luyện nghe tiếng Anh', 'Tiếng Anh', NULL, '2025-12-01', 3, 'Đang làm');
 
 -- Bảng Pomodoro Sessions (Chế độ Pomodoro)
 INSERT INTO PomodoroSessions (task_id, user_id, start_time, end_time, duration_seconds, type) VALUES
