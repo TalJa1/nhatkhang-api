@@ -107,7 +107,7 @@ INSERT INTO Tasks (user_id, title, subject, description, due_date, priority, sta
 (3, 'Ôn tập Đại số', 'Toán', NULL, '2025-07-10', 2, 'Đang làm'),
 (2, 'Viết báo cáo thí nghiệm', 'Hóa Học', NULL, '2025-08-01', 1, 'Đang làm'),
 (1, 'Chuẩn bị bài thuyết trình', 'Văn', NULL, '2025-09-15', 2, 'Đang làm'),
-(3, 'Làm bài tập về nhà', 'Vật Lý', NULL, '2025-07-20', 3, 'Quá hạn'),
+(3, 'Làm bài tập về nhà', 'Vật Lý', NULL, '2025-03-20', 3, 'Quá hạn'),
 (2, 'Đọc chương 3 Sách Sinh', 'Sinh học', NULL, '2025-10-05', 2, 'Đang làm'),
 (1, 'Tìm hiểu về AI', 'Tin học', NULL, '2025-11-11', 1, 'Hoàn thành'),
 (3, 'Luyện nghe tiếng Anh', 'Tiếng Anh', NULL, '2025-12-01', 3, 'Đang làm');
